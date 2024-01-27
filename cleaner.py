@@ -7,22 +7,7 @@ import logging
 logging.basicConfig(filename='file_cleaner.log', level=logging.INFO,
                     format='%(asctime)s - %(levelname)s - %(message)s')
 
-def move_file(source_path, target_path, source, target):
-    file =  os.path.join(source_path, source)
-    directory = os.path.join(target_path, target)
-    #check if folder exists
-    if not os.path.exists(directory):
-        os.mkdir(directory)
-        logging.info("Created folder {} at {}".format(target, target_path))
-
-    shutil.move(file,directory)
-    logging.info("Moved {} to {}".format(source, target))
-
-def sort_files(dl, dt):
-    #move all files from downloads to appropriate location desktop
-    os.chdir(dl)
-
-    media_extensions = {
+media_extensions = {
         "Audio": [
             "mp3", "wav", "aac", "flac", "ogg", "wma", "m4a", "aiff"
         ],
@@ -36,6 +21,21 @@ def sort_files(dl, dt):
             "pdf", "doc", "docx", "ppt", "pptx", "xls", "xlsx", "txt", "odt"
         ]
     }
+
+def move_file(source_path, target_path, source, target):
+    file =  os.path.join(source_path, source)
+    directory = os.path.join(target_path, target)
+    #check if folder exists
+    if not os.path.exists(directory):
+        os.mkdir(directory)
+        logging.info("Created folder {} at {}".format(target, target_path))
+
+    shutil.move(file,directory)
+    logging.info("Moved {} to {}".format(source, target))
+
+def sort_downloads(dl, dt):
+    #move all files from downloads to appropriate location desktop
+    os.chdir(dl)
 
     #list of files
     files = os.listdir()
@@ -57,24 +57,11 @@ def sort_files(dl, dt):
             
         if misc:
             move_file(dl, dt, file, "Misc")
-            
-
-
-
-#def clean_old():
-
-
-
-
-    
-
 
 def main():
     desk_path = os.path.expanduser("~/Desktop")
     down_path = os.path.expanduser("~/Downloads")
-    sort_files(down_path, desk_path)
-    
-
+    sort_downloads(down_path, desk_path)
 
 
 if __name__  == "__main__":
